@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THEP AI Compass — reflective matrix mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;450;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14202A;
+    --ink-soft:#3B4A55;
+    --paper:#EDF1F3;
+    --surface:#FFFFFF;
+    --teal:#0B6E5D;
+    --teal-deep:#073B34;
+    --teal-wash:#E3EEEB;
+    --amber:#B4690E;
+    --amber-wash:#F6EBDB;
+    --mist:#64777F;
+    --line:#D6DEE3;
+    --line-soft:#E7ECEF;
+    --shadow:0 1px 2px rgba(20,32,42,.04),0 8px 28px rgba(20,32,42,.06);
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Inter",system-ui,sans-serif;font-size:16px;line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:"Space Grotesk",sans-serif;font-weight:600;letter-spacing:-.015em;line-height:1.12;margin:0}
+  .mono{font-family:"IBM Plex Mono",monospace}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  a{color:var(--teal)}
+
+  /* ---------- header ---------- */
+  header.top{border-bottom:1px solid var(--line);background:rgba(237,241,243,.86);backdrop-filter:blur(8px);position:sticky;top:0;z-index:20}
+  .top-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 24px;max-width:1120px;margin:0 auto}
+  .brand{display:flex;align-items:center;gap:12px}
+  .mark{width:34px;height:34px;border-radius:9px;background:var(--teal);position:relative;flex:none}
+  .mark::before,.mark::after{content:"";position:absolute;background:#fff;opacity:.9}
+  .mark::before{left:50%;top:6px;bottom:6px;width:2px;transform:translateX(-50%)}
+  .mark::after{top:50%;left:6px;right:6px;height:2px;transform:translateY(-50%)}
+  .brand b{font-family:"Space Grotesk";font-weight:600;font-size:16px;letter-spacing:-.01em}
+  .brand span{display:block;font-size:11.5px;color:var(--mist);letter-spacing:.02em}
+  .layers{display:flex;gap:6px}
+  .layer-chip{font-family:"IBM Plex Mono";font-size:11px;padding:5px 9px;border-radius:999px;border:1px solid var(--line);color:var(--ink-soft);background:var(--surface);white-space:nowrap}
+  .layer-chip b{color:var(--teal);font-weight:500}
+  @media(max-width:720px){.layers{display:none}}
+
+  /* ---------- hero / intro ---------- */
+  .hero{padding:52px 0 8px}
+  .eyebrow{font-family:"IBM Plex Mono";font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin-bottom:16px}
+  .hero h1{font-size:clamp(30px,4.6vw,46px);max-width:18ch}
+  .hero p.lede{font-size:clamp(16px,1.9vw,19px);color:var(--ink-soft);max-width:58ch;margin:18px 0 0}
+  .hero .hint{margin-top:22px;font-size:13.5px;color:var(--mist);display:flex;align-items:center;gap:8px}
+  .hero .hint::before{content:"";width:22px;height:1px;background:var(--mist);display:inline-block}
+
+  section{padding:44px 0}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
+  .sec-head .num{font-family:"IBM Plex Mono";font-size:13px;color:var(--teal)}
+  .sec-head h2{font-size:clamp(21px,2.6vw,27px)}
+  .sec-sub{color:var(--mist);font-size:14.5px;margin:0 0 24px;max-width:62ch}
+
+  /* ---------- matrix ---------- */
+  .matrix-layout{display:grid;grid-template-columns:1.35fr 1.15fr;gap:26px;align-items:start}
+  @media(max-width:900px){.matrix-layout{grid-template-columns:1fr}}
+  .grid-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);overflow-x:auto;position:sticky;top:78px}
+  @media(max-width:900px){.grid-card{position:static}}
+  table.matrix{border-collapse:separate;border-spacing:3px;width:100%;min-width:520px}
+  table.matrix th,table.matrix td{padding:0}
+  .corner{text-align:left;vertical-align:bottom;padding:4px 6px 8px!important;width:118px}
+  .corner span{font-family:"IBM Plex Mono";font-size:10.5px;color:var(--mist);line-height:1.3;display:block}
+  th.dom{cursor:pointer;vertical-align:bottom;padding:6px 4px!important}
+  th.dom .dlab{font-family:"Space Grotesk";font-weight:500;font-size:11.5px;color:var(--ink-soft);writing-mode:vertical-rl;transform:rotate(180deg);margin:0 auto;white-space:nowrap;padding:6px 0;border-radius:6px;transition:color .15s}
+  th.dom:hover .dlab,th.dom.on .dlab{color:var(--teal)}
+  th.prin{cursor:pointer;text-align:left;vertical-align:middle;padding:0 8px 0 6px!important;max-width:118px}
+  th.prin .plab{font-family:"Space Grotesk";font-weight:500;font-size:12.5px;color:var(--ink-soft);transition:color .15s}
+  th.prin:hover .plab,th.prin.on .plab{color:var(--teal)}
+  td.cell{cursor:pointer}
+  td.cell button{width:100%;height:44px;border:1px solid var(--line-soft);background:#F7FAFB;border-radius:7px;cursor:pointer;padding:0;display:block;transition:transform .12s,background .12s,border-color .12s;position:relative}
+  td.cell button:hover{background:var(--teal-wash);border-color:var(--teal)}
+  td.cell button:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+  td.cell button .dot{width:6px;height:6px;border-radius:50%;background:#C4D2D3;margin:0 auto;transition:background .12s,transform .12s}
+  td.cell button:hover .dot{background:var(--teal)}
+  /* crosshair */
+  tr.rowon th.prin .plab{color:var(--teal);font-weight:600}
+  td.cell.colon button,td.cell.rowon button{background:#EAF3F1}
+  td.cell.active button{background:var(--teal);border-color:var(--teal-deep);transform:scale(1.04)}
+  td.cell.active button .dot{background:#fff;transform:scale(1.5)}
+
+  /* reading panel — extended for questions / practice / TH grounding / reading */
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;min-height:280px;max-height:calc(100vh - 110px);overflow-y:auto}
+  @media(max-width:900px){.panel{max-height:none}}
+  .panel .tags{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+  .tag{font-family:"IBM Plex Mono";font-size:10.5px;letter-spacing:.03em;padding:4px 8px;border-radius:999px;text-transform:uppercase}
+  .tag.p{background:var(--teal-wash);color:var(--teal-deep)}
+  .tag.d{background:#EEF1F3;color:var(--ink-soft)}
+  .panel h3{font-size:19px;margin-bottom:10px;line-height:1.22}
+  .panel .commit{font-size:15.5px;color:var(--ink);margin:0 0 14px}
+  .panel .empty{color:var(--mist);font-size:14.5px}
+  .panel ul.rowlist{margin:10px 0 0;padding-left:0;list-style:none}
+  .panel ul.rowlist li{font-size:13.8px;color:var(--ink-soft);padding:8px 0;border-top:1px solid var(--line-soft);display:flex;gap:9px;cursor:pointer;border-radius:6px;transition:background .12s}
+  .panel ul.rowlist li:hover{background:var(--teal-wash)}
+  .panel ul.rowlist li:first-child{border-top:none}
+  .panel ul.rowlist li .k{font-family:"IBM Plex Mono";font-size:10.5px;color:var(--teal);min-width:74px;padding-top:2px;flex:none;text-transform:uppercase}
+
+  .sublab{font-family:"IBM Plex Mono";font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--teal);margin:20px 0 8px;display:flex;align-items:center;gap:8px}
+  .sublab::after{content:"";flex:1;height:1px;background:var(--line-soft)}
+  ol.qs{margin:0;padding:0;list-style:none;counter-reset:q}
+  ol.qs li{counter-increment:q;font-size:14.5px;color:var(--ink);padding:8px 0 8px 34px;position:relative;border-top:1px solid var(--line-soft)}
+  ol.qs li:first-child{border-top:none}
+  ol.qs li::before{content:"Q" counter(q);position:absolute;left:0;top:9px;font-family:"IBM Plex Mono";font-size:10.5px;color:var(--teal);background:var(--teal-wash);border-radius:6px;padding:2px 6px}
+  ul.pts{margin:0;padding:0;list-style:none}
+  ul.pts li{font-size:13.8px;color:var(--ink-soft);padding:7px 0 7px 16px;position:relative}
+  ul.pts li::before{content:"";position:absolute;left:2px;top:14px;width:5px;height:5px;border-radius:50%;background:var(--teal)}
+  ul.pts li b{color:var(--ink);font-weight:600}
+  .thbox{border-left:3px solid var(--teal);background:var(--teal-wash);border-radius:0 10px 10px 0;padding:12px 14px;font-size:13.8px;color:var(--ink);margin-top:2px}
+  .go{display:flex;align-items:flex-start;gap:9px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line-soft);font-size:13.5px}
+  .go .arrow{font-family:"IBM Plex Mono";color:var(--teal);flex:none;padding-top:1px}
+  .go a{font-weight:500;text-decoration-thickness:1px;text-underline-offset:2px}
+  .go span.src-note{display:block;font-size:11.5px;color:var(--mist);margin-top:2px}
+
+  /* ---------- radar feed ---------- */
+  .radar-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:18px}
+  .filters{display:flex;gap:7px;flex-wrap:wrap}
+  .filters button{font-family:"IBM Plex Mono";font-size:11.5px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);cursor:pointer;transition:.12s}
+  .filters button:hover{border-color:var(--teal);color:var(--teal)}
+  .filters button.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+  .sample-note{font-size:12px;color:var(--mist);font-style:italic}
+
+  .feed{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:760px){.feed{grid-template-columns:1fr}}
+  .item{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column}
+  .item .meta{display:flex;align-items:center;gap:9px;margin-bottom:11px;flex-wrap:wrap}
+  .src{font-family:"IBM Plex Mono";font-size:11px;font-weight:500;color:var(--ink);background:#EEF1F3;padding:3px 8px;border-radius:6px}
+  .urg{font-family:"IBM Plex Mono";font-size:10px;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:999px}
+  .urg.action{background:var(--amber-wash);color:var(--amber)}
+  .urg.aware{background:#EBF0F2;color:var(--mist)}
+  .date{font-family:"IBM Plex Mono";font-size:11px;color:var(--mist);margin-left:auto}
+  .item h3{font-size:17px;line-height:1.24;margin-bottom:9px}
+  .item .summary{font-size:14px;color:var(--ink-soft);margin:0 0 14px}
+  .item .domlist{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+  .item .domlist span{font-family:"IBM Plex Mono";font-size:10px;color:var(--mist);border:1px solid var(--line);padding:2px 7px;border-radius:999px}
+  .lens{margin-top:auto;border-top:1px solid var(--line-soft);padding-top:13px}
+  .lens-btn{width:100%;display:flex;align-items:center;justify-content:space-between;background:none;border:none;cursor:pointer;padding:0;font-family:"Space Grotesk";font-size:13px;font-weight:500;color:var(--teal)}
+  .lens-btn .chev{transition:transform .2s}
+  .lens.open .lens-btn .chev{transform:rotate(90deg)}
+  .lens-body{max-height:0;overflow:hidden;transition:max-height .28s ease}
+  .lens.open .lens-body{max-height:400px}
+  .lens-inner{padding-top:12px}
+  .ai-flag{display:flex;align-items:center;gap:7px;font-family:"IBM Plex Mono";font-size:10px;letter-spacing:.03em;text-transform:uppercase;color:var(--mist);margin-bottom:9px}
+  .ai-flag .badge{background:var(--teal-wash);color:var(--teal-deep);padding:2px 7px;border-radius:999px}
+  .ai-flag .badge.unrev{background:var(--amber-wash);color:var(--amber)}
+  .lens-inner p{font-size:13.5px;color:var(--ink);margin:0 0 10px}
+  .verify{font-size:11.5px;color:var(--mist);display:flex;align-items:center;gap:6px}
+  .verify a{font-weight:500}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--line);padding:34px 0 60px;margin-top:20px}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:30px}
+  @media(max-width:720px){.foot-grid{grid-template-columns:1fr}}
+  footer h3{font-size:16px;margin-bottom:8px}
+  footer p{font-size:13.5px;color:var(--ink-soft);margin:0 0 8px;max-width:52ch}
+  .foot-note{font-size:12px;color:var(--mist);margin-top:26px;border-top:1px solid var(--line-soft);padding-top:16px}
+
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <div class="mark" aria-hidden="true"></div>
+      <div>
+        <b>THEP · AI Compass</b>
+        <span>Tower Hamlets Education Partnership — framework mockup</span>
+      </div>
+    </div>
+    <div class="layers" aria-label="Framework layers">
+      <div class="layer-chip"><b>Layer 1</b> Values</div>
+      <div class="layer-chip"><b>Layer 2</b> Commitments</div>
+      <div class="layer-chip"><b>Layer 3</b> Live registers</div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Reflective first, instructive second</div>
+    <h1>Seven values. Six areas of school life. Forty-two conversations worth having.</h1>
+    <p class="lede">A borough-wide framework schools adopt and adapt — not a mandate. Each intersection opens with the questions a leadership team should sit with, then the practical, referenced points to weigh, grounded in what it actually means to run a school in Tower Hamlets.</p>
+    <div class="hint">Select a cell to open its questions — or a value or domain heading to scan the whole row or column</div>
+  </div>
+
+  <!-- ===================== MATRIX ===================== -->
+  <section id="matrix">
+    <div class="sec-head"><span class="num">01</span><h2>The principles × domains matrix</h2></div>
+    <p class="sec-sub">Every value shows up differently in each area of school life. The grid is the map; the panel opens each intersection in three moves — <b>ask</b> (the reflective questions), <b>consider</b> (referenced practical points), and <b>here</b> (how it lands on the ground in this borough) — with a link to go deeper.</p>
+
+    <div class="matrix-layout">
+      <div class="grid-card">
+        <table class="matrix" id="mtx">
+          <thead>
+            <tr id="domRow"><th class="corner"><span>value ↓<br>domain →</span></th></tr>
+          </thead>
+          <tbody id="mtxBody"></tbody>
+        </table>
+      </div>
+
+      <aside class="panel" id="panel" aria-live="polite">
+        <p class="empty">Nothing selected yet. Tap any square to open the questions where a value meets a domain — or tap a value or domain heading to scan the whole row or column.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ===================== RADAR ===================== -->
+  <section id="radar">
+    <div class="sec-head"><span class="num">02</span><h2>The Radar — curated guidance, watched for you</h2></div>
+    <p class="sec-sub">A small, trusted set of sources — DfE, KCSIE, JCQ, ICO, UNESCO, TeachAI, EEF — watched for changes so heads don't have to trawl. Each item carries a plain summary and, where reviewed, a Tower Hamlets reading. This is a Layer 3 instrument: it changes often; the values above do not.</p>
+
+    <div class="radar-head">
+      <div class="filters" id="filters">
+        <button class="on" data-f="all">All</button>
+        <button data-f="action">Action needed</button>
+        <button data-f="Safeguarding">Safeguarding</button>
+        <button data-f="Academic outcomes">Assessment</button>
+        <button data-f="Curriculum">Curriculum</button>
+        <button data-f="Teaching">Teaching</button>
+      </div>
+      <span class="sample-note">Sample data — illustrative items, not live guidance</span>
+    </div>
+
+    <div class="feed" id="feed"></div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h3>How the two halves fit</h3>
+        <p>The matrix is the stable framework — Layers 1 and 2, reviewed every year or two. Its questions are designed to be asked in SLT meetings, governor sessions and staff CPD; the practical points beneath them are where reflection turns into a decision.</p>
+        <p>The Radar is Layer 3: the volatile material, watched and summarised so the framework never has to be rewritten just because a new tool or update landed. Every Radar item is tagged against the same six domains as the matrix, so a head can move from "what changed this week" straight to "which of our commitments it touches."</p>
+      </div>
+      <div>
+        <h3>The tool obeys the framework</h3>
+        <p><b>Transparency:</b> AI-written summaries are labelled as such.</p>
+        <p><b>Teacher-in-the-loop:</b> the Tower Hamlets reading shows whether a human has reviewed it yet.</p>
+        <p><b>Verify at source:</b> every reading link goes to the original — the tool signposts, it does not replace the guidance.</p>
+      </div>
+    </div>
+    <p class="foot-note">Interactive mockup for discussion. Framework content drawn from the THEP AI design scaffold (v0.2). Reading links point to the live source documents; Radar items are placeholder examples to show the pattern, not current regulatory advice.</p>
+  </div>
+</footer>
+
+<script>
+/* ---------------- SOURCE LIBRARY (verified live URLs) ---------------- */
+const READS = {
+  dfe_policy:{t:"DfE — Generative AI in education (policy position)",u:"https://www.gov.uk/government/publications/generative-artificial-intelligence-in-education"},
+  dfe_mod4:{t:"DfE — Use cases of generative AI in education (Module 4)",u:"https://www.gov.uk/government/publications/use-cases-of-generative-ai-in-education-module-4"},
+  dfe_safety:{t:"DfE — Generative AI: product safety standards",u:"https://www.gov.uk/government/publications/generative-ai-product-safety-standards/generative-ai-product-safety-standards"},
+  dfe_standards:{t:"DfE — Digital and technology standards for schools",u:"https://www.gov.uk/guidance/meeting-digital-and-technology-standards-in-schools-and-colleges"},
+  kcsie:{t:"DfE — Keeping Children Safe in Education",u:"https://www.gov.uk/government/publications/keeping-children-safe-in-education--2"},
+  jcq:{t:"JCQ — AI Use in Assessments",u:"https://www.jcq.org.uk/exams-office/malpractice/artificial-intelligence/"},
+  ico:{t:"ICO — Children's code guidance and resources",u:"https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/childrens-information/childrens-code-guidance-and-resources/"},
+  unesco_s:{t:"UNESCO — AI competency framework for students",u:"https://www.unesco.org/en/articles/ai-competency-framework-students"},
+  unesco_t:{t:"UNESCO — AI competency framework for teachers",u:"https://www.unesco.org/en/articles/ai-competency-framework-teachers"},
+  eef_pp:{t:"EEF — Guide to the Pupil Premium",u:"https://educationendowmentfoundation.org.uk/education-evidence/using-pupil-premium"},
+  eef_edtech:{t:"EEF — EdTech research agenda (evidence on digital technology)",u:"https://educationendowmentfoundation.org.uk/projects-and-evaluation/research-agenda-themes-priority-areas/research-agenda-theme-edtech"},
+  teachai:{t:"TeachAI — AI guidance for schools toolkit",u:"https://www.teachai.org/toolkit"}
+};
+
+/* ---------------- PRINCIPLES & DOMAINS ---------------- */
+const PRINCIPLES = [
+  {k:"rel", name:"Relationships first", blurb:"AI serves teaching and learning; it never replaces the relationship or the professional decision."},
+  {k:"eq",  name:"Equity is the standard", blurb:"Every decision is tested against one question: does this widen or narrow the gap for our most disadvantaged learners?"},
+  {k:"think",name:"Protect thinking", blurb:"We preserve productive friction — the desirable difficulty learning requires. Useful is not the same as safe."},
+  {k:"safe", name:"Safety before adoption", blurb:"No tool enters a setting before it has been assessed."},
+  {k:"trans",name:"Transparency", blurb:"We are open about when, how and why AI is used — with staff, pupils and families."},
+  {k:"dig",  name:"Dignity & agency", blurb:"Pupils are treated as future creators and critical users of AI, not passive consumers."},
+  {k:"inc",  name:"Inclusion by design", blurb:"Access, language and accessibility are designed in from the start, not retrofitted."}
+];
+const DOMAINS = ["Curriculum","Teaching","Safeguarding","Academic outcomes","Culture","Inequality"];
+</script>
+<script>
+/* ---------------- MATRIX CELLS: questions → practice → TH grounding → reading ---------------- */
+/* c = headline commitment · q = reflective questions · pts = referenced practical points
+   th = how it lands on the ground in Tower Hamlets · read = key into READS */
+const CELLS = {
+
+  "rel-Curriculum":{c:"AI literacy taught by teachers, not outsourced",
+    q:["Who in our school actually teaches pupils what AI is — and would they say they feel qualified to?",
+       "If we bought an off-the-shelf AI literacy product tomorrow, what would our own teachers stop doing as a result?",
+       "Which subjects currently touch AI at all, and is that by design or by accident of who's interested?"],
+    pts:["<b>Anchor the curriculum in a teacher-led spine.</b> UNESCO's student framework is deliberately tool-agnostic — competencies from a human-centred mindset through to system design — which makes it a durable scaffold a department can own rather than a product subscription.",
+         "<b>Map before you buy.</b> Audit where AI already appears across Computing, PSHE, RS and English before commissioning anything new; most schools find more coverage than they expected, held by two or three enthusiasts.",
+         "<b>Name the risk of outsourcing.</b> A platform can deliver content, but only a teacher who knows the class can frame when to trust a model's output — the framing is the literacy."],
+    th:"In a borough where many pupils' first sustained encounter with AI happens at school, the person doing the framing matters more, not less. Staff turnover and stretched CPD time make an external platform tempting — but a subscription that walks out the door when budgets tighten leaves nothing behind. A teacher-held curriculum survives the renewal cycle.",
+    read:"unesco_s"},
+
+  "rel-Teaching":{c:"AI cuts workload to free relational time",
+    q:["If AI saved every teacher three hours a week, where would those hours actually go — and who decides?",
+       "Are we adopting AI to improve teaching, or to make an unsustainable workload survivable without fixing it?",
+       "What would our ECTs say the planning support they need most is — and is AI actually it?"],
+    pts:["<b>Make the dividend explicit.</b> The DfE's own materials position AI first as a workload tool — planning, adapting, drafting, feedback. Write down where the saved time is meant to land (tutoring, phone calls home, subject planning) or it will evaporate into more tasks.",
+         "<b>Protect checking time.</b> DfE guidance is clear that staff must critically review AI outputs; leaders should assume ECTs and non-specialists need more support to check outputs than to generate them.",
+         "<b>Watch the workload paradox.</b> EEF's EdTech evidence base is mixed — tools that promise time savings can quietly add preparation, verification and admin."],
+    th:"Recruitment and retention pressures in inner London make the workload case for AI genuinely compelling — and genuinely risky. In a school where staff already stretch across intervention groups, EAL scaffolding and pastoral load, the saved hour must be visibly returned to teachers, not silently absorbed. Making that explicit is a leadership decision, not a tool feature.",
+    read:"dfe_mod4"},
+
+  "rel-Safeguarding":{c:"DSL owns AI-related risk",
+    q:["Could our DSL explain, today, how generative AI changes the risks our pupils face online?",
+       "If a deepfake incident involving pupils surfaced this term, who would lead — the DSL, the network manager, or whoever bought the tool?",
+       "Where does AI sit on our safeguarding training calendar — and is it there at all?"],
+    pts:["<b>Name the owner.</b> KCSIE places filtering, monitoring and online-safety duties with safeguarding leadership; AI risk should be explicit in the DSL's brief, not diffused across IT and SLT.",
+         "<b>Update the incident playbook.</b> Deepfakes and AI-generated imagery need a named route: who preserves evidence, who contacts families, when police are involved.",
+         "<b>Train for recognition, not just rules.</b> Staff need to know what AI-enabled harm looks like — synthetic images, chatbot over-disclosure — before policy language means anything."],
+    th:"Dense social media ecosystems around East London schools mean AI-generated content spreads through year groups in hours, often across sibling and community networks that span several schools. A DSL who owns this risk — and who can pick up the phone to counterparts in neighbouring THEP schools — turns an isolated incident into shared intelligence.",
+    read:"kcsie"},
+
+  "rel-Academic outcomes":{c:"Teacher judgement is the keystone of integrity",
+    q:["When a teacher suspects AI misuse, what do they actually do next — and would every department give the same answer?",
+       "Do our teachers see enough of each pupil's unaided work to know what their authentic voice sounds like?",
+       "Are we quietly relying on AI detectors we know to be unreliable?"],
+    pts:["<b>Build the baseline.</b> JCQ guidance leans on teachers knowing the standard a student is working at — supervised, in-class writing early in a course is what makes later judgement defensible.",
+         "<b>Judgement over detection.</b> JCQ lists indicators of misuse but no detector is determinative; the professional call of a teacher who knows the pupil's usual work is what an awarding body will ask about.",
+         "<b>Record the reasoning.</b> Where AI use affects a mark, JCQ expects the decision and its grounds to be clearly recorded — protect staff by making that recording routine, not exceptional."],
+    th:"For pupils whose grades carry a family's aspirations — first-in-family sixth form and university routes are common across the borough — a wrong integrity call in either direction is devastating. Teacher judgement rooted in genuinely knowing each pupil's work is both the fairest instrument and the one that stands up to appeal.",
+    read:"jcq"},
+
+  "rel-Culture":{c:"Shared language across staff",
+    q:["If we asked ten colleagues what our school's position on AI is, how many different answers would we get?",
+       "Do support staff, cover supervisors and lunchtime staff share the vocabulary — or just the teachers who attended the INSET?",
+       "What's the shortest version of our AI values a Year 7 could repeat back?"],
+    pts:["<b>Compress the framework.</b> A memorable value set (the SPARK pattern — a handful of words every adult can carry) does more cultural work than a twelve-page policy nobody rereads.",
+         "<b>Put it where talk happens.</b> Assemblies, staff briefings, parent coffee mornings — shared language spreads through repetition in ordinary settings, not documents.",
+         "<b>Let TeachAI's toolkit do the drafting.</b> Its guidance templates are designed to be adapted; the cultural act is the adaptation conversation itself."],
+    th:"Tower Hamlets schools run on a wide staff ecology — teachers, learning support assistants, mentors, home-school liaison workers, many drawn from the local community. A shared AI vocabulary that reaches all of them, not just teaching staff, is what makes the culture coherent when a pupil asks an LSA in the corridor whether they're allowed to use ChatGPT.",
+    read:"teachai"},
+
+  "rel-Inequality":{c:"Human support never replaced by a chatbot",
+    q:["Is there anywhere in our provision — homework help, wellbeing, careers — where a struggling child's first responder is now software?",
+       "If budget pressure forced a choice between a mentoring post and an AI platform, how would we decide?",
+       "Do pupils know the difference between AI help and human help — and do they know they're entitled to the latter?"],
+    pts:["<b>Draw the line in policy.</b> Pastoral care, SEND support and family contact stay human; AI may assist the adult but never substitutes for one. DfE materials flag pupil-facing wellbeing tools as a particular risk area.",
+         "<b>Audit the quiet substitutions.</b> Replacement rarely arrives as a decision — it arrives as a homework platform's chatbot quietly becoming the only help available at 8pm.",
+         "<b>Check disclosure routes.</b> A child who discloses to a chatbot must still reach a person; DfE product safety standards expect tools to alert safeguarding leads, but the school's own routes matter more."],
+    th:"In a borough with some of the highest child poverty in the country, school staff are often the most stable adults in a child's week. The relational infrastructure — mentors, pastoral teams, home-school workers who speak families' languages — is precisely what a cost-cutting AI substitution would dismantle first, and precisely what disadvantaged pupils can least afford to lose.",
+    read:"dfe_safety"},
+
+  "eq-Curriculum":{c:"Literacy as an entitlement for every child",
+    q:["Which of our pupils would learn to use AI critically even if we taught nothing — and which would never learn it anywhere but here?",
+       "Is AI literacy in our curriculum offer for every pupil, or concentrated in Computing options that not everyone takes?",
+       "What does 'critical' mean in our teaching — spotting errors, or questioning whose interests a system serves?"],
+    pts:["<b>Frame it as entitlement.</b> UNESCO's framework treats AI competency as a universal educational goal, not an enrichment strand — write it into the core offer, not the options columns.",
+         "<b>Teach the sociology, not just the software.</b> Bias, whose data, whose labour, who profits — the critical layer is what distinguishes literacy from user training.",
+         "<b>Sequence across key stages.</b> UNESCO's Understand → Apply → Create progression gives a defensible answer to 'what does Year 8 get that Year 10 doesn't?'"],
+    th:"Home access to paid AI tools, and to adults who use them at work, is sharply uneven across the borough. School may be the only place many pupils learn to interrogate AI rather than merely consume it — which makes critical AI literacy a social-justice entitlement here in the way reading was a century ago, not a nice-to-have for the able.",
+    read:"unesco_s"},
+
+  "eq-Teaching":{c:"CPD reaches every school, not just confident ones",
+    q:["Across our partnership, which schools have had no AI CPD at all — and do we know, or are we guessing?",
+       "Is our training designed for the keenest staff or the most hesitant?",
+       "What would it take for a supply-heavy, high-turnover school to keep AI capability rather than lose it every July?"],
+    pts:["<b>Start from the free spine.</b> The DfE's support modules cost nothing and are quality-assured — route every school's 'knowledgeable other' through them first, then layer local case studies on top.",
+         "<b>Invert the usual order.</b> Collective CPD programmes tend to reach confident schools first; design deliberately for the least confident or the borough develops a two-tier capability map.",
+         "<b>Make it stick beyond individuals.</b> Capability held by one enthusiast leaves with them; capability held in schemes of work, department handbooks and induction materials survives turnover."],
+    th:"Inner London churn is real: schools here train teachers who are then recruited outward, and CPD investment can feel like filling a leaking bucket. A partnership-level CPD spine — shared, repeatable, documented — is the hedge. It also protects the small schools and PRUs that can't send anyone out on a course without collapsing their cover budget.",
+    read:"dfe_policy"},
+
+  "eq-Safeguarding":{c:"Equal protection regardless of home access",
+    q:["Do our safeguarding assumptions imagine a child who first meets AI at school, at home, or unsupervised on a phone at midnight?",
+       "Whose parents can teach them AI risks — and what do we provide for everyone else's?",
+       "Are our filtering and monitoring settings calibrated to our most protected pupils or our most exposed?"],
+    pts:["<b>Assume uneven exposure.</b> KCSIE's expectations don't flex by postcode; protection must be designed for the child with the least support at home, which protects everyone.",
+         "<b>Extend beyond the gate.</b> Education about AI risk is the only protection that travels home with the pupil — filtering stops at the school network.",
+         "<b>Check the standards annually.</b> DfE filtering and monitoring standards expect at least annual review including how the school's technology use — now including generative AI — has changed."],
+    th:"Many pupils here navigate the internet with little adult mediation — parents working multiple jobs, language barriers around platform safety information, shared devices in crowded homes. A safeguarding posture that quietly assumes a supervising, English-speaking adult at home protects the already-protected. Designing for the least-supported child is the equity test.",
+    read:"kcsie"},
+
+  "eq-Academic outcomes":{c:"Don't let attainment gaps widen",
+    q:["If AI tutoring works, who in our school is getting it first — and is that by design?",
+       "Which of our assessment practices would advantage a pupil with premium AI tools at home?",
+       "How will we know, in two years, whether our AI decisions narrowed or widened our disadvantage gap?"],
+    pts:["<b>Treat EdTech claims with EEF-grade scepticism.</b> The evidence on digital technology is mixed, and its impact on disadvantaged pupils is smaller and less certain — implementation quality, not tool choice, does the work.",
+         "<b>Target deliberately.</b> Where AI tutoring or feedback is adopted, aim it first at pupil-premium cohorts and monitor with the same rigour as any PP-funded intervention.",
+         "<b>Design assessment for equal footing.</b> Take-home tasks that reward tool access are a hidden regressive tax; balance them with supervised demonstrations of capability."],
+    th:"The borough's schools have long outperformed their demographics — the 'Tower Hamlets effect' was built on relentless, targeted attention to disadvantaged pupils. AI could extend that story or quietly reverse it: the same tools that promise personalised support also reward private access. Every adoption decision deserves a line in the pupil premium strategy, with the same evidence discipline the EEF expects of any spend.",
+    read:"eef_pp"},
+
+  "eq-Culture":{c:"Family engagement is multilingual",
+    q:["In which languages has our school ever communicated anything about AI?",
+       "When we last surveyed parents about technology, who answered — and who never does?",
+       "Do our families hear about AI from us first, or from headlines and rumour?"],
+    pts:["<b>Translate the substance, not just the letter.</b> AI-assisted translation makes multilingual engagement cheaper than it has ever been — use it, with human checking, for the material that matters.",
+         "<b>Work through trusted intermediaries.</b> Parent coffee mornings, community organisations and faith settings carry information further than a MailChimp ever will.",
+         "<b>Invite scrutiny, not just consent.</b> The Children's code expects transparency families can actually understand; a form nobody can read is not transparency."],
+    th:"Bengali, Sylheti, Somali, and a dozen other languages are the daily reality of family communication here. Ironically, AI translation is one of the clearest immediate wins for engagement — a letter home in a family's own language, checked by bilingual staff. A school that uses AI to widen the conversation about AI is modelling the framework rather than just publishing it.",
+    read:"ico"},
+
+  "eq-Inequality":{c:"The through-line, not a section",
+    q:["When we last made an AI decision, at what point in the discussion did disadvantage come up — start, middle, or after the decision?",
+       "Who around our decision-making table speaks for the pupils least like the people at the table?",
+       "If we audited every cell of this grid for our own school, which would score worst for our poorest pupils?"],
+    pts:["<b>Make it a standing question.</b> 'Does this widen or narrow the gap?' belongs on the template for every AI proposal, procurement and policy review — structurally, not rhetorically.",
+         "<b>Borrow pupil premium discipline.</b> The EEF's tiered model (quality teaching first, targeted support second, wider strategies third) maps cleanly onto AI decisions and stops shiny-tool spending.",
+         "<b>Report on it.</b> If AI appears in the school development plan, it should appear in the pupil premium strategy statement too — same pupils, same money, same scrutiny."],
+    th:"Equity isn't one domain among six in this borough; it is the operating condition. Nearly half the children in some Tower Hamlets wards grow up below the poverty line, and every commitment on this grid is ultimately read through one question: who does this help, and who does it leave behind? That question is the framework's true spine — the rest is elaboration.",
+    read:"eef_pp"},
+
+  "think-Curriculum":{c:"Ethics & critical evaluation woven across subjects",
+    q:["If we removed the word 'AI' from our curriculum map, where would pupils still be learning to question sources, bias and authority?",
+       "Is AI ethics a unit somebody teaches, or a habit every subject reinforces?",
+       "Which department would be most surprised to be told it has a role in AI literacy?"],
+    pts:["<b>Weave, don't bolt.</b> Bias in history sources, reliability in science, authorship in English, fairness in RS and PSHE — critical evaluation of AI extends dispositions subjects already teach.",
+         "<b>Use UNESCO's ethics dimension as the checklist.</b> Its 'Ethics of AI' strand gives departments a shared reference without prescribing lessons.",
+         "<b>Beware the standalone unit trap.</b> A one-off Year 8 module signals that critical thinking about AI is a topic that ends, rather than a stance that persists."],
+    th:"Curriculum time in a results-accountable school is the scarcest resource there is, and a bolted-on AI unit competes with everything. Weaving costs less time and lands better — a Tower Hamlets humanities classroom discussing whose stories training data leaves out is often richer ground for AI ethics than any Computing lesson, because pupils recognise themselves in the question.",
+    read:"unesco_s"},
+
+  "think-Teaching":{c:"\u201CUseful vs safe\u201D framing in planning",
+    q:["When a colleague shows off a tool that saves an hour, do we ever ask what the pupils lose in that hour?",
+       "Which parts of our subjects require struggle that AI now makes optional — and have we named them?",
+       "Do our planning conversations distinguish AI that removes obstacles to learning from AI that removes the learning?"],
+    pts:["<b>Adopt the two-question test.</b> Not just 'does this help?' but 'is this safe for learning?' — a tool can be genuinely useful and still wrong for the lesson because the difficulty was the point.",
+         "<b>Locate desirable difficulty explicitly.</b> Departments should be able to say which tasks exist to produce struggle (retrieval, drafting, problem-solving) and shield them.",
+         "<b>Check outputs and pedagogy together.</b> DfE guidance stresses reviewing AI output for accuracy; the deeper review is whether the output short-circuits the thinking the task was built to cause."],
+    th:"The pressure to accept anything that eases workload is enormous in a stretched school — and the pupils most at risk from friction-free learning are those without home scaffolding to rebuild it. Protecting productive struggle here is an equity act: the child who never has to draft, redraft and fail safely at school may never get to do it anywhere.",
+    read:"dfe_mod4"},
+
+  "think-Safeguarding":{c:"Guard against over-reliance for emotional & health support",
+    q:["Do we know whether any of our pupils are using chatbots for emotional support, health questions or advice at night?",
+       "What would a pupil in our school say is easier: telling an adult something hard, or telling an app?",
+       "Where in PSHE or pastoral programmes do we actually talk about AI companionship and advice-seeking?"],
+    pts:["<b>Name it as a risk category.</b> Emotional over-reliance on AI sits alongside content risks in modern safeguarding thinking; DfE product safety standards specifically flag tools handling mental-health disclosures.",
+         "<b>Build the PSHE strand.</b> Age-appropriate teaching about what chatbots are (and aren't), why they feel easy to talk to, and where real help lives.",
+         "<b>Keep human routes visible and warm.</b> The counter to a 2am chatbot isn't a ban — it's pupils knowing exactly which adults they can reach and trusting the reception they'll get."],
+    th:"Long CAMHS waits and thin community mental-health provision mean East London young people fill gaps with whatever responds — and chatbots always respond. Pupils carrying caring responsibilities, housing insecurity or family stress at levels common in this borough are exactly those most likely to lean on a machine that never seems tired of them. Pastoral systems need to know this pattern exists before they can meet it.",
+    read:"dfe_safety"},
+
+  "think-Academic outcomes":{c:"AI-stripped assessment of raw capability",
+    q:["For each subject and year group, could we point to one recent piece of work we're certain was unaided?",
+       "If all take-home work became AI-assisted overnight, which of our judgements about pupils would survive?",
+       "Are we designing supervised assessment as punishment for suspicion, or as fair proof of what pupils can do?"],
+    pts:["<b>One clean artefact per judgement.</b> At least one assessment of capability per cycle rests on AI-stripped conditions — in-class writing, viva, live performance — so the school knows what each pupil can actually do.",
+         "<b>Align with JCQ's supervision logic.</b> Exam-condition work early and often is exactly what JCQ recommends so teachers know the standard a student genuinely works at.",
+         "<b>Frame it as entitlement.</b> Pupils deserve the chance to prove capability in a way nobody can question — that framing lands better than surveillance."],
+    th:"For pupils heading into interviews, apprenticeships and universities that increasingly test in person, the ability to think unassisted is the currency — and pupils without home study space or quiet often produce their best unaided work at school anyway. Supervised assessment, framed as protected time and proof of skill, fits the rhythms of this borough's pupils better than take-home trust exercises.",
+    read:"jcq"},
+
+  "think-Culture":{c:"Productive struggle valued openly",
+    q:["When did a leader in our school last say publicly that finding something hard is the point?",
+       "Does our marking and praise reward polished products or visible thinking?",
+       "What do pupils believe we want: the right answer fast, or the honest attempt slow?"],
+    pts:["<b>Say it from the front.</b> Assemblies, parents' evenings, reports — the school's public voice should defend difficulty before a tool-smoothed culture makes the case impossible.",
+         "<b>Show teacher struggle too.</b> Staff modelling drafts, mistakes and revision normalises effort; UNESCO's teacher framework puts reflective, critical use above fluent use.",
+         "<b>Audit reward systems.</b> If merits, displays and grades only celebrate finished polish, the incentive to shortcut is structural, not moral."],
+    th:"Many families here hold fierce aspirations built on the belief that hard work at school changes lives — a cultural asset most schools would envy. Naming productive struggle openly honours that belief and enlists parents as allies: the message that 'we could let machines make this easy, and we choose not to, because your child's mind is the point' resonates deeply in this community.",
+    read:"unesco_t"},
+
+  "think-Inequality":{c:"Critical-use literacy, not just access",
+    q:["If we gave every pupil a laptop and a chatbot tomorrow, would our disadvantage gap close or just change shape?",
+       "Which pupils in our school use AI most — and are they using it in ways that build capability or replace it?",
+       "Is our digital-inclusion work counting devices, or measuring judgement?"],
+    pts:["<b>Access is the floor, not the goal.</b> EEF evidence consistently shows technology's impact depends on how it's used pedagogically — hardware programmes without critical-use teaching underdeliver.",
+         "<b>Watch for dependence as the new gap.</b> Advantaged pupils tend to be taught to interrogate tools; without deliberate teaching, disadvantaged pupils can be left with access plus dependence — a worse position than no access.",
+         "<b>Measure judgement, not logins.</b> Usage dashboards flatter; what matters is whether pupils can say when the tool is wrong."],
+    th:"Device schemes and connectivity funds have narrowed the borough's hardware gap since the pandemic — the harder gap now is interpretive. A pupil who accepts whatever the model says has been given a new dependency, not a new capability. The equity work here is teaching the scepticism that better-resourced pupils absorb at home, and that no device grant can ship.",
+    read:"eef_edtech"},
+
+  "safe-Curriculum":{c:"Age-appropriate tools only",
+    q:["Do we actually know the minimum-age terms of every AI tool our pupils are asked or encouraged to use?",
+       "How does what a Year 7 meets differ from what a Year 12 meets — and could we defend the difference to a parent?",
+       "Who checks age-appropriateness when an enthusiastic teacher finds a new tool on a Sunday night?"],
+    pts:["<b>Check the terms first.</b> Many popular AI tools are 13+ or 18+ in their own terms of service; DfE guidance is explicit that pupil access needs particular caution.",
+         "<b>Grade the latitude.</b> Little or no independent AI use for the youngest, structured and supervised use in the middle, widening critical latitude for the oldest — written down per key stage.",
+         "<b>Route new tools through a gate.</b> A lightweight request form to a named lead beats discovering a classroom of Year 8s on an 18+ platform at parents' evening."],
+    th:"With large families common and devices shared across siblings, an older child's school-sanctioned tool becomes a younger child's bedtime toy within the same flat. Age-appropriateness in this borough can't stop at the classroom door — parent guidance in community languages about which tools carry which age limits is part of the same commitment.",
+    read:"dfe_policy"},
+
+  "safe-Teaching":{c:"No pupil personal data in open tools",
+    q:["Would every member of staff — including supply and trainees — know that pasting a pupil's report into a free chatbot is a data breach?",
+       "Where is the line between 'a Year 9 pupil struggling with fractions' and identifiable data — and who has explained it?",
+       "When did we last check what staff actually do, rather than what policy says they should?"],
+    pts:["<b>Make the rule absolute and teachable.</b> Pupil personal data never enters open AI tools — a hard line is learnable; a nuanced one is ignorable.",
+         "<b>Explain the why.</b> ICO guidance treats children's data as meriting special protection; free tools may retain, review and train on inputs — staff who understand the mechanism follow the rule.",
+         "<b>Offer the safe alternative.</b> The rule holds only if staff have an approved, enterprise-controlled route for the legitimate tasks they were trying to do."],
+    th:"The staff most tempted to shortcut are the most overloaded — and inner-London workloads are relentless. Pupil data here is also unusually sensitive in aggregate: immigration status anxieties, safeguarding histories, EHCP detail. A borough-negotiated safe tool with proper data terms costs less than one school's ICO incident, financially and in community trust that takes years to build.",
+    read:"ico"},
+
+  "safe-Safeguarding":{c:"KCSIE filtering & monitoring extended to GenAI",
+    q:["Would our current filtering catch a pupil generating harmful imagery, or only a pupil searching for it?",
+       "When we last reviewed filtering and monitoring, did generative AI appear in the review at all?",
+       "Does our online-safety policy name deepfakes and AI-generated content, or rely on 2019 categories?"],
+    pts:["<b>Read the duties as covering GenAI.</b> KCSIE's filtering, monitoring and online-safety expectations extend to generative tools — policies should say so explicitly rather than by implication.",
+         "<b>Review annually against the standards.</b> DfE filtering and monitoring standards expect at least annual review reflecting how the school's technology use has changed — GenAI is now that change.",
+         "<b>Prepare for generation, not just access.</b> The novel risk is pupils creating harmful content — synthetic images of peers, generated abuse material — which monitoring built for search patterns can miss."],
+    th:"Incidents involving AI-generated imagery of pupils have hit UK schools with community fallout far beyond the individuals involved — and in a borough of tightly connected school communities, reputational and safeguarding shockwaves cross catchments fast. Shared THEP incident protocols and a common review calendar give small schools the same defensive depth as large ones.",
+    read:"kcsie"},
+
+  "safe-Academic outcomes":{c:"Approved-tool list for assessment contexts",
+    q:["If an awarding body asked tomorrow which AI tools our candidates may use in NEA, could we hand them a list?",
+       "Who owns that list, how does a tool get on it, and when was it last reviewed?",
+       "Do pupils know the list exists — or do they find the rules out only when accused?"],
+    pts:["<b>Maintain a named list.</b> In assessment contexts only vetted, named tools are permitted — the list, its owner and its review date are what makes the malpractice policy operable.",
+         "<b>Tie it to JCQ requirements.</b> Centres must define their approach to preventing and identifying AI misuse per subject; an approved-tool list plus disclosure norms is the defensible core of that approach.",
+         "<b>Publish it to pupils and parents.</b> Integrity rules pupils learn only at the point of accusation are traps, not standards."],
+    th:"Exam outcomes carry exceptional weight for families here, and malpractice processes are terrifying for pupils who often can't call on confident, system-savvy advocates at home. A clear, published, taught approved-tool list protects them twice over: it prevents accidental misuse, and it means any genuine case rests on rules everyone demonstrably knew.",
+    read:"jcq"},
+
+  "safe-Culture":{c:"Norms modelled by leaders",
+    q:["Do staff know when their own leaders use AI — or do leaders quietly use tools the school hasn't approved?",
+       "If SLT drafted this term's parent letter with AI, would we say so in the staffroom?",
+       "What does our school reward: colleagues who disclose their AI use, or colleagues who hide it well?"],
+    pts:["<b>Lead by visible example.</b> Leaders using AI within the rules — and saying so — sets more culture than any memo; hypocrisy detected once undoes a year of policy.",
+         "<b>Use DfE leadership materials as the mirror.</b> The leadership toolkit frames AI governance as a leadership behaviour, not a compliance document.",
+         "<b>Make disclosure cheap.</b> If admitting AI use invites judgement, staff will stop admitting; normalise 'I drafted this with AI and checked it' as ordinary professional speech."],
+    th:"School cultures in high-pressure boroughs run on watchfulness — staff notice fast when the rules are for other people. Heads here also model to a wider audience than their staffroom: THEP's collegial structure means one head's honest, disciplined AI practice becomes another school's reference point within a term. Visible integrity compounds across the partnership.",
+    read:"dfe_policy"},
+
+  "safe-Inequality":{c:"Collective vetting protects under-resourced schools",
+    q:["Which schools in our partnership have anyone with time and expertise to vet an AI tool properly — and which are guessing?",
+       "How many times this year has the same tool been separately assessed by different Tower Hamlets schools?",
+       "What would a shared DPIA library save us, in hours and in risk?"],
+    pts:["<b>Vet once, use many times.</b> A borough-level shared register of assessed tools — with DPIAs, age-terms checks and safety-standards review — turns duplicated labour into common infrastructure.",
+         "<b>Anchor to the DfE product safety standards.</b> They give a common yardstick so every school's vetting asks the same questions of suppliers.",
+         "<b>Protect the smallest first.</b> The schools least able to vet alone — small primaries, PRUs, special schools — gain most from collective diligence; design the register for their needs, not just the big secondaries'."],
+    th:"A large secondary may have a network manager, a DPO contract and a deputy with digital in their title; a two-form-entry primary in Poplar has none of those and the same legal duties. Collective vetting is the partnership's clearest equity mechanism for schools themselves — the borough's diligence becomes every school's diligence, whatever their size or budget.",
+    read:"dfe_safety"},
+
+  "trans-Curriculum":{c:"Pupils learn to disclose AI use",
+    q:["Have we ever actually taught disclosure as a skill — with models and practice — or only demanded it as a rule?",
+       "Could our pupils distinguish between acknowledging AI help and citing an AI as a source?",
+       "What happens, socially and academically, to the pupil in our school who discloses honestly?"],
+    pts:["<b>Teach the mechanics.</b> JCQ expects specific acknowledgement — the tool, the date, how it was used, retained evidence — which is a referencing skill to be taught like any other, not assumed.",
+         "<b>Model it in lessons.</b> Teachers narrating their own disclosure ('I generated three versions of this starter and picked one') makes the practice ordinary.",
+         "<b>Reward honesty visibly.</b> If the disclosed essay scores lower than the concealed one, the lesson pupils learn is concealment."],
+    th:"Pupils working in a second or third language sometimes lean on AI precisely for the linguistic surface of their work — a use that's easy to demonise and better to surface. Taught disclosure lets a Tower Hamlets pupil say 'I used it to check my English, the ideas are mine' — an honest, defensible position that protects them at moderation and builds exactly the professional habit employers now expect.",
+    read:"jcq"},
+
+  "trans-Teaching":{c:"Staff flag where AI was used and reviewed",
+    q:["If a parent asked whether their child's report comments were AI-drafted, what would we say — and would every colleague give the same answer?",
+       "Do we distinguish between AI-assisted and AI-generated in our own professional work?",
+       "What review actually happens between generation and a document reaching a child or family?"],
+    pts:["<b>Adopt a light convention.</b> A simple internal flag — AI-assisted, human-reviewed — on schemes, resources and communications keeps the school honest without bureaucracy.",
+         "<b>Mirror what we ask of pupils.</b> Staff disclosure norms and pupil disclosure norms should rhyme; asymmetry corrodes both.",
+         "<b>Review means review.</b> DfE guidance is unambiguous that outputs must be checked for accuracy and appropriateness before use — the flag certifies that a person actually did."],
+    th:"Trust between school and family is a slow-built asset in this borough, often mediated through language barriers and, for some families, wariness of institutions. If it ever emerged that reports home were machine-written and unread by a human, the damage would be community-wide. A visible review discipline is cheap insurance on something genuinely expensive.",
+    read:"dfe_mod4"},
+
+  "trans-Safeguarding":{c:"Clear reporting routes",
+    q:["If a pupil saw a disturbing AI-generated image of a classmate tonight, would they know exactly who to tell tomorrow?",
+       "Do staff know how to report a concern about an AI tool itself — not just about a pupil's use of one?",
+       "How would a parent with limited English raise an AI-related worry with us?"],
+    pts:["<b>Name the route, not just the rule.</b> One named person, one known mechanism, communicated in assemblies and staff briefings — concerns surface early only when the path is obvious.",
+         "<b>Cover tools as well as behaviour.</b> KCSIE-aligned reporting should catch 'this platform did something worrying' as readily as 'this pupil did something worrying'.",
+         "<b>Lower every barrier.</b> Anonymous options, translated guidance, pupil-friendly wording — each barrier removed is an incident caught earlier."],
+    th:"Community networks here move information fast — but not always toward the school. A worrying AI incident may circulate through sibling groups and WhatsApp long before an adult in a school hears of it. Reporting routes that families can actually use, in languages they actually read, convert that community speed from a risk into an early-warning system.",
+    read:"kcsie"},
+
+  "trans-Academic outcomes":{c:"Disclosure norms in coursework",
+    q:["Do our coursework instructions state what AI use is permitted, or only what is banned?",
+       "Would a conscientious pupil and a chancer read our current rules the same way?",
+       "Are our norms designed to catch the dishonest or to guide the honest?"],
+    pts:["<b>Assume assistance, require honesty.</b> Take-home work is now presumptively AI-touchable; clear disclosure norms make that honest rather than a trap for rule-followers.",
+         "<b>Specify per subject.</b> JCQ expects centres to define their approach for each subject's NEA — 'ask your teacher' is the fallback, not the policy.",
+         "<b>Keep the evidence trail.</b> Retained prompts and outputs, per JCQ's acknowledgement rules, protect the pupil as much as the centre when questions arise."],
+    th:"Coursework season in a high-stakes school is pressure-cooker time, and ambiguous rules punish exactly the pupils with least access to savvy adult interpretation at home. Norms written in plain English — and explained in community languages at Year 10 and 12 parent events — mean a family can support their child's integrity instead of discovering the rules at a malpractice hearing.",
+    read:"jcq"},
+
+  "trans-Culture":{c:"Open about uncertainty",
+    q:["Does our public voice about AI admit what nobody yet knows about its effects on learning?",
+       "Can a sceptical member of staff voice doubt in our school without being cast as a dinosaur?",
+       "When our position changes — and it will — how will we explain the change to families?"],
+    pts:["<b>Say 'we don't know yet' out loud.</b> The long-term effects of AI on how children learn are genuinely uncertain; a school that admits this earns the right to be believed on what it does know.",
+         "<b>Treat disagreement as data.</b> Staff scepticism often encodes real pedagogical knowledge — a healthy culture mines it rather than managing it away.",
+         "<b>Version your position.</b> Dating the policy and narrating changes ('here's what we've learned since September') models exactly the critical, revisable thinking we teach."],
+    th:"Communities here have seen educational initiatives arrive with fanfare and vanish — scepticism is earned, not reflexive. A school that overclaims on AI and quietly retreats loses more trust than one that says plainly: this is promising, this is uncertain, and here is how we'll tell you what we learn. Honest uncertainty is the sustainable register for a decade of change.",
+    read:"dfe_policy"},
+
+  "trans-Inequality":{c:"Parents told what tools their children meet",
+    q:["Could every family in our school name one AI tool their child uses in lessons?",
+       "Is our privacy and tools information genuinely readable by a parent with limited English or limited time?",
+       "Who in our community never comes to information evenings — and how do they find out instead?"],
+    pts:["<b>Publish the tool list to families.</b> Which AI tools, in which subjects, handling what data — plainly stated, in the languages of the community.",
+         "<b>Meet the Children's code spirit.</b> ICO transparency expectations centre on information children and families can actually understand — legalistic notices don't discharge the duty.",
+         "<b>Create a question route.</b> A named contact for tool questions signals that scrutiny is welcome, which is what genuine transparency feels like from the outside."],
+    th:"For parents who didn't grow up with this technology, in a system that can feel opaque even in one's first language, the information gap about school AI use falls hardest on the least-connected families. Transparency here is an equity commitment: the parent who can't Google a tool's reputation is exactly the parent the school must inform directly, warmly, and in their own language.",
+    read:"ico"},
+
+  "dig-Curriculum":{c:"Students as co-creators (UNESCO's Create level)",
+    q:["Does any pupil in our school ever build with AI — or do they only ever consume it?",
+       "What would a Year 10 project look like that treated pupils as designers of AI systems rather than users?",
+       "Which pupils get creative-technology opportunities now, and who is missing from those rooms?"],
+    pts:["<b>Aim past 'apply'.</b> UNESCO's student framework climbs from Understand through Apply to Create — training simple models, designing tools, interrogating systems — and the top level is where agency lives.",
+         "<b>Use project vehicles that exist.</b> Computing NEA-adjacent projects, STEM clubs, community-problem challenges — creation doesn't need a new subject, it needs an ambition.",
+         "<b>Audit who creates.</b> If creation opportunities cluster in option subjects and after-school clubs, check who those structures quietly exclude."],
+    th:"Tech employment is visible from these classrooms — Canary Wharf's towers and Shoreditch's studios are bus rides away, yet the pipeline from local schools into those buildings stays thin. Teaching pupils to build with AI, not just prompt it, is how the borough's young people claim the industry on their doorstep rather than servicing it. Aspiration is the curriculum decision here.",
+    read:"unesco_s"},
+
+  "dig-Teaching":{c:"Pupil voice in tool choice",
+    q:["Have pupils ever been asked what they think of the tools we require them to use?",
+       "What do our pupils know about AI that our staff don't — and how would we find out?",
+       "If pupils co-reviewed a tool and said no, would anything actually change?"],
+    pts:["<b>Consult before adopting.</b> Pupil panels trialling tools surface usability and dignity problems adults miss — and the Children's code itself expects children's views to inform services designed for them.",
+         "<b>Harvest their expertise.</b> Pupils often know current AI culture — what peers actually use, how it's really used — better than any staff survey reveals.",
+         "<b>Close the loop.</b> Voice without consequence teaches cynicism; report back what changed because pupils said so."],
+    th:"Young people here live in one of Britain's most digitally saturated youth cultures and are routinely underestimated by systems that talk about them rather than with them. A school that genuinely lets pupils shape its AI choices gains better decisions and something rarer: pupils who feel like citizens of the school's digital life rather than subjects of it.",
+    read:"ico"},
+
+  "dig-Safeguarding":{c:"Pupils know how to raise concerns",
+    q:["Could a Year 5 in our school explain what to do if an AI tool said something that scared them?",
+       "Do our pupils believe reporting works — or that it just gets things banned and people in trouble?",
+       "How would we hear about a problem in a tool pupils use at home but talk about at school?"],
+    pts:["<b>Teach reporting as agency.</b> Age-appropriate lessons on flagging AI harms frame pupils as protectors of themselves and each other, not passive subjects of filtering.",
+         "<b>Make the mechanism child-sized.</b> KCSIE expects pupils to know how to raise concerns; for AI that means concrete, rehearsed steps, not a policy paragraph.",
+         "<b>Respond in ways pupils can see.</b> Visible follow-up — 'you told us, and this is what we did' — is what converts one report into a culture of reporting."],
+    th:"Some children here carry heavy home responsibilities young, and self-reliance can shade into never asking adults for help. Framing concern-raising as competence — something strong, older-sibling-like — fits how many of these pupils already see themselves, and reaches the child who would never present as vulnerable but will absolutely act to protect a younger sibling.",
+    read:"kcsie"},
+
+  "dig-Academic outcomes":{c:"Assessment rewards AI literacy where appropriate",
+    q:["Is skilled, disclosed AI use ever creditable in our school — or only ever suspect?",
+       "Which subjects could legitimately assess how well a pupil directs, checks and improves on AI output?",
+       "Are we preparing pupils for assessments as they are, or for the working world as it will be?"],
+    pts:["<b>Distinguish arenas.</b> JCQ governs qualification assessment strictly — but school-designed assessment has room to credit disclosed, skilful AI use where the subject and age warrant it.",
+         "<b>Assess the direction, not the output.</b> Prompting, verifying, editing and improving on a model's work are demonstrable skills; UNESCO's 'apply' level sketches what progression looks like.",
+         "<b>Keep the boundary taught.</b> Pupils must know with total clarity which contexts credit AI skill and which forbid it — the dual regime only works if the border is bright."],
+    th:"Employers across London already expect graduates who can work with AI competently and honestly. For pupils who won't inherit professional networks, certified, demonstrable skill is the ladder — a school that treats all AI use as suspicion-worthy denies its pupils a credential their better-connected peers will acquire elsewhere. Rewarding disclosed skill, where legitimate, is aspiration policy.",
+    read:"unesco_s"},
+
+  "dig-Culture":{c:"Disagreement welcomed",
+    q:["Who in our school openly disagrees with our AI direction — and what happened to them?",
+       "Do our pupils ever see adults disagree well about technology?",
+       "Is our AI position a settled orthodoxy or a live conversation?"],
+    pts:["<b>Protect the dissenters.</b> The colleague who resists AI often guards something real about learning; the enthusiast often sees something real about the future. A culture that holds both decides better.",
+         "<b>Stage the debate.</b> Structured disagreement — staff panels, pupil debates, governor discussions — turns tension into institutional thinking.",
+         "<b>Separate values from tactics.</b> The seven values are the settled layer; how they're enacted should stay genuinely arguable, per the framework's own three-layer design."],
+    th:"This borough's civic history is one of argument — organising, dissent, communities negotiating change on their own terms. A school culture that welcomes disagreement about AI isn't just psychologically safer; it's culturally fluent here. And pupils who watch adults disagree well about technology are learning the democratic skill the AI era will demand of them most.",
+    read:"teachai"},
+
+  "dig-Inequality":{c:"Aspiration, not deficit framing",
+    q:["When we talk about our disadvantaged pupils and AI, is the sentence about what they lack or what they could build?",
+       "Do our pupil-premium AI interventions read as remediation or as investment?",
+       "Whose faces are on the walls when we teach about people who make AI?"],
+    pts:["<b>Audit the language.</b> 'Closing gaps' framing has its place in strategy documents; in classrooms and assemblies the register should be capability and future — creators, founders, researchers.",
+         "<b>Fund upward, not just backward.</b> Alongside catch-up uses, aim some AI investment at stretch: creation projects, competitions, industry links for PP pupils specifically.",
+         "<b>Curate the role models.</b> Pupils should meet AI practitioners who look and sound like them — the borough and city hold plenty."],
+    th:"These pupils are not a deficit to be managed; they're the most linguistically and culturally resourced generation in one of the world's great cities, a mile from a global tech corridor. The framing question is whether school AI policy addresses them as future makers of this technology or as its remedial recipients — and pupils can always tell which one they've been assigned.",
+    read:"eef_pp"},
+
+  "inc-Curriculum":{c:"SEND & EAL built into curriculum design",
+    q:["Was our AI-literacy planning checked against our SEND and EAL cohorts at the design stage — or adapted for them afterwards?",
+       "Which pupils find our current AI teaching inaccessible, and how do we know?",
+       "Does our curriculum treat multilingualism as a complication or a resource when teaching about AI?"],
+    pts:["<b>Design from the margins in.</b> Planning that starts with the EHCP pupil and the new-arrival EAL pupil produces teaching that works for everyone; retrofitting produces bolt-ons that work for no one well.",
+         "<b>Use AI's own accessibility affordances.</b> Text simplification, translation, reading support — taught explicitly, these tools give SEND and EAL pupils direct experience of AI as an enabler.",
+         "<b>Check representation in materials.</b> UNESCO's framework foregrounds inclusion and cultural diversity; examples and imagery in AI lessons should pass the same test."],
+    th:"In classrooms where a dozen home languages sit alongside a rising tide of EHCPs and stretched specialist provision, inclusive design isn't a compliance nicety — it's the difference between AI literacy reaching the whole room or a third of it. The borough's multilingualism is also a live asset: pupils who test a translation model against their own two languages are doing genuine critical AI evaluation.",
+    read:"unesco_s"},
+
+  "inc-Teaching":{c:"Accessibility as a procurement criterion",
+    q:["Does accessibility appear as a scored line on our tool-evaluation checklist — or as a hope?",
+       "Which pupils would be unable to use each tool we currently run, and did we know before we bought it?",
+       "Have we ever rejected a tool on accessibility grounds?"],
+    pts:["<b>Score it or lose it.</b> Accessibility as a weighted procurement criterion — screen-reader compatibility, language support, cognitive load — changes what gets bought; aspiration without scoring changes nothing.",
+         "<b>Lean on the standards.</b> DfE product safety standards expect suppliers to state target demographics including SEND status; make suppliers answer, in writing, before contract.",
+         "<b>Test with real pupils.</b> A twenty-minute trial with pupils who use assistive technology reveals more than any vendor accessibility statement."],
+    th:"When SEND budgets are under the pressure they are across inner London, a tool that excludes the pupils who most need support is a double cost — the licence fee plus the workaround staff time. Collective THEP procurement multiplies the leverage: a borough asking accessibility questions together gets answers a single school's licence fee never would.",
+    read:"dfe_safety"},
+
+  "inc-Safeguarding":{c:"Bias & deepfake awareness",
+    q:["Would our pupils recognise a biased AI output about their own community — and would our staff?",
+       "Who in our school population is most likely to be misrepresented or targeted by generated content?",
+       "Where do we teach synthetic-media recognition, and to whom?"],
+    pts:["<b>Teach recognition as protection.</b> Staff and pupils learn what biased outputs and manipulated media look like — protection through literacy, complementing filtering.",
+         "<b>Centre the most-targeted.</b> Generated harms concentrate on those already marginalised; awareness teaching should name that pattern honestly and age-appropriately.",
+         "<b>Connect to reporting.</b> Recognition without a route to act is anxiety; pair every awareness lesson with the concern-raising mechanism."],
+    th:"Pupils here belong to communities that AI systems demonstrably misrepresent — in imagery, in language, in the assumptions of models trained elsewhere. That makes bias education unusually concrete in a Tower Hamlets classroom: pupils can test claims against their own lived knowledge, which is exactly the critical stance the framework wants, taught through experience no textbook could supply.",
+    read:"unesco_s"},
+
+  "inc-Academic outcomes":{c:"Multiple artefact formats suit diverse learners",
+    q:["How many different ways can a pupil in our school prove they understand something?",
+       "Which pupils does a written-essay monoculture systematically undersell?",
+       "Does our anti-AI-misuse posture accidentally push us toward formats that disadvantage SEND and EAL pupils?"],
+    pts:["<b>Triangulate judgement.</b> Several artefacts in different formats — written, oral, practical, observed — give a truer picture of capability than one proxy, and are collectively harder to fake.",
+         "<b>Notice the integrity co-benefit.</b> Vivas, presentations and supervised practicals are simultaneously more inclusive and more AI-resistant; the inclusion move and the integrity move are the same move.",
+         "<b>Keep JCQ conditions distinct.</b> Where awarding-body rules fix the format, they rule; school-designed assessment is where format plurality lives."],
+    th:"A pupil eighteen months into English may reason brilliantly and write haltingly; a pupil with an EHCP may show mastery orally that a timed essay would bury. Format plurality is where inclusion and assessment integrity converge — the multilingual, high-SEND classroom that triangulates through talk, demonstration and supervised writing is both fairer and harder to game. That convergence is a gift; take it.",
+    read:"jcq"},
+
+  "inc-Culture":{c:"Community as partner",
+    q:["Who from our community has ever been in the room when we discussed AI — parents, governors, faith and community organisations?",
+       "What does our community know about AI that we don't — through work, faith perspectives, home-country experience?",
+       "Are we informing our community about our AI decisions, or making decisions with them?"],
+    pts:["<b>Convene, don't broadcast.</b> Community panels, parent governor briefings, standing items at existing forums — partnership means the conversation shapes decisions, not merely announces them.",
+         "<b>Import community expertise.</b> Parents work in tech, health, transport and finance where AI already operates; their ground truth enriches school thinking.",
+         "<b>Use trusted infrastructure.</b> The organisations communities already trust — including faith settings — carry conversations schools cannot start alone."],
+    th:"This borough's schools succeed when they work with the grain of community — that lesson is decades old here and it applies squarely to AI. Families hold real views about technology, privacy and childhood, informed by faith, work and experience of institutions. A framework built with them will be defended by them; one delivered to them will be endured at best.",
+    read:"teachai"},
+
+  "inc-Inequality":{c:"EAL & SEND treated as opportunity",
+    q:["Where is AI already quietly helping our EAL and SEND pupils — and are we learning from it or ignoring it?",
+       "If we designed one AI-supported intervention purely around multilingual learners' strengths, what would it be?",
+       "Are our accessibility uses of AI evaluated with the same rigour as our attainment uses?"],
+    pts:["<b>Design for it deliberately.</b> Translation, scaffolding, text adaptation and communication support are areas where AI can genuinely lift outcomes for multilingual and SEND learners — treat them as flagship uses, not side effects.",
+         "<b>Evaluate like an intervention.</b> EEF-style discipline — clear intended outcome, baseline, review — applies to accessibility uses as much as attainment ones.",
+         "<b>Keep the human wrap.</b> AI scaffolds the access; the teacher, TA and speech-language expertise remain the intervention. Tools amplify specialist capacity, never replace it."],
+    th:"If there is one place where this borough could lead the country rather than follow it, it's here: no local authority has a richer test bed of multilingual learners, and few have more urgent SEND demand pressing on fewer specialist hours. AI that extends a TA's reach, adapts a text overnight, or lets a parent read their child's report in Sylheti isn't the risky edge of the framework — it's the prize.",
+    read:"eef_edtech"}
+};
+
+/* ---------------- BUILD MATRIX ---------------- */
+const domRow = document.getElementById('domRow');
+DOMAINS.forEach(dom=>{
+  const th=document.createElement('th');
+  th.className='dom';th.dataset.dom=dom;th.scope='col';
+  th.innerHTML=`<div class="dlab">${dom}</div>`;
+  th.onclick=()=>showDomain(dom);
+  domRow.appendChild(th);
+});
+const body=document.getElementById('mtxBody');
+PRINCIPLES.forEach(p=>{
+  const tr=document.createElement('tr');tr.dataset.prin=p.k;
+  const th=document.createElement('th');th.className='prin';th.scope='row';
+  th.innerHTML=`<div class="plab">${p.name}</div>`;
+  th.onclick=()=>showPrinciple(p.k);
+  tr.appendChild(th);
+  DOMAINS.forEach(dom=>{
+    const td=document.createElement('td');td.className='cell';
+    td.dataset.prin=p.k;td.dataset.dom=dom;
+    const b=document.createElement('button');
+    b.setAttribute('aria-label',`${p.name} in ${dom}`);
+    b.innerHTML='<span class="dot"></span>';
+    b.onclick=()=>showCell(p.k,dom);
+    td.appendChild(b);tr.appendChild(td);
+  });
+  body.appendChild(tr);
+});
+
+/* ---------------- PANEL RENDERERS ---------------- */
+const panel=document.getElementById('panel');
+function clearHi(){
+  document.querySelectorAll('.cell').forEach(c=>c.classList.remove('active','rowon','colon'));
+  document.querySelectorAll('tr').forEach(r=>r.classList.remove('rowon'));
+  document.querySelectorAll('th.dom,th.prin').forEach(t=>t.classList.remove('on'));
+}
+function pName(k){return PRINCIPLES.find(p=>p.k===k).name}
+
+function showCell(pk,dom){
+  clearHi();
+  document.querySelectorAll(`.cell[data-prin="${pk}"]`).forEach(c=>c.classList.add('rowon'));
+  document.querySelectorAll(`.cell[data-dom="${dom}"]`).forEach(c=>c.classList.add('colon'));
+  const cell=document.querySelector(`.cell[data-prin="${pk}"][data-dom="${dom}"]`);
+  cell.classList.remove('rowon','colon');cell.classList.add('active');
+  const data=CELLS[`${pk}-${dom}`];
+  const read=READS[data.read];
+  panel.innerHTML=`
+    <div class="tags"><span class="tag p">${pName(pk)}</span><span class="tag d">${dom}</span></div>
+    <h3>${data.c}</h3>
+    <div class="sublab">Ask yourselves</div>
+    <ol class="qs">${data.q.map(q=>`<li>${q}</li>`).join('')}</ol>
+    <div class="sublab">To consider</div>
+    <ul class="pts">${data.pts.map(pt=>`<li>${pt}</li>`).join('')}</ul>
+    <div class="sublab">On the ground in Tower Hamlets</div>
+    <div class="thbox">${data.th}</div>
+    <div class="go"><span class="arrow">\u2197</span><span><a href="${read.u}" target="_blank" rel="noopener">${read.t}</a><span class="src-note">Verify at source — the Compass signposts, it does not replace the guidance.</span></span></div>`;
+  panel.scrollTop=0;
+}
+function showPrinciple(pk){
+  clearHi();
+  document.querySelectorAll(`tr[data-prin="${pk}"] th.prin`).forEach(t=>t.classList.add('on'));
+  const p=PRINCIPLES.find(x=>x.k===pk);
+  let li=DOMAINS.map(dom=>`<li data-pk="${pk}" data-dom="${dom}"><span class="k">${dom}</span><span>${CELLS[`${pk}-${dom}`].c}</span></li>`).join('');
+  panel.innerHTML=`
+    <div class="tags"><span class="tag p">Value</span></div>
+    <h3>${p.name}</h3>
+    <p class="commit">${p.blurb}</p>
+    <ul class="rowlist">${li}</ul>
+    <p class="empty" style="margin-top:14px">Select any line to open its questions.</p>`;
+  wireRowList();
+  panel.scrollTop=0;
+}
+function showDomain(dom){
+  clearHi();
+  document.querySelectorAll(`th.dom[data-dom="${dom}"]`).forEach(t=>t.classList.add('on'));
+  let li=PRINCIPLES.map(p=>`<li data-pk="${p.k}" data-dom="${dom}"><span class="k">${p.name.split(' ')[0]}\u2026</span><span>${CELLS[`${p.k}-${dom}`].c}</span></li>`).join('');
+  panel.innerHTML=`
+    <div class="tags"><span class="tag d">Domain</span></div>
+    <h3>${dom}</h3>
+    <p class="commit">How all seven values land in ${dom.toLowerCase()}:</p>
+    <ul class="rowlist">${li}</ul>
+    <p class="empty" style="margin-top:14px">Select any line to open its questions.</p>`;
+  wireRowList();
+  panel.scrollTop=0;
+}
+function wireRowList(){
+  panel.querySelectorAll('.rowlist li').forEach(li=>{
+    li.onclick=()=>showCell(li.dataset.pk,li.dataset.dom);
+  });
+}
+
+/* ---------------- RADAR FEED DATA (sample) ---------------- */
+const FEED=[
+  {src:"DfE",date:"Jun 2026",urg:"aware",title:"Using AI in education settings — support modules refreshed",
+   doms:["Teaching","Curriculum"],url:READS.dfe_mod4.u,
+   sum:"The DfE's support materials for staff were updated, with revised modules on classroom use and workload. Stance unchanged: schools decide whether and how AI is used; safety stays the priority.",
+   lens:"For THEP, the free modules are the backbone of a low-cost CPD spine — route your \u2018knowledgeable other\u2019 in each cluster through them first, then layer school-led case studies on top so training reaches less-confident schools, not only the keen ones.",
+   reviewed:true},
+  {src:"KCSIE",date:"May 2026",urg:"action",title:"Filtering & monitoring duties now explicitly name generative AI",
+   doms:["Safeguarding"],url:READS.kcsie.u,
+   sum:"Keeping Children Safe in Education makes clear that filtering, monitoring and safeguarding policies must address generative AI, including deepfakes and AI-generated harmful imagery.",
+   lens:"Action for each school: check your safeguarding policy names GenAI explicitly and your DSL owns the risk. In a high-deprivation borough, assume uneven home exposure — protection can't rely on pupils already knowing the risks.",
+   reviewed:true},
+  {src:"JCQ / Ofqual",date:"Jun 2026",urg:"action",title:"Reminder on AI use and assessment malpractice ahead of coursework season",
+   doms:["Academic outcomes"],url:READS.jcq.u,
+   sum:"Guidance reiterates centres must have measures to prevent and detect AI misuse in non-exam assessment, keep a defensible record, and secure the Head of Centre declaration.",
+   lens:"Maps straight onto the \u2018proof of skill\u2019 approach in the matrix: at least one AI-stripped artefact per capability judgement, disclosure norms for take-home work, an approved-tool list. Frame it as fairness, not a ban that only catches rule-followers.",
+   reviewed:false},
+  {src:"ICO",date:"May 2026",urg:"aware",title:"Refreshed guidance on DPIAs for AI processing of children's data",
+   doms:["Safeguarding","Teaching"],url:READS.ico.u,
+   sum:"The ICO underlines that AI tools processing pupil data typically require a Data Protection Impact Assessment, with extra care where children's data is involved.",
+   lens:"A strong case for borough-level collective procurement: a shared DPIA template and vetting saves every school repeating the work, and stops a two-tier borough where only well-staffed schools can assess tools properly.",
+   reviewed:true},
+  {src:"UNESCO",date:"Apr 2026",urg:"aware",title:"AI Competency Framework for Students — implementation examples added",
+   doms:["Curriculum"],url:READS.unesco_s.u,
+   sum:"New worked examples show progression across the framework's competencies, from a human-centred mindset through to AI system design (Understand \u2192 Apply \u2192 Create).",
+   lens:"Because it's tool-agnostic it won't date — ideal as your curriculum spine. Anchor your key-stage expectations here, and use the \u2018Create\u2019 level to push an aspiration framing for disadvantaged pupils rather than a deficit one.",
+   reviewed:true},
+  {src:"TeachAI",date:"Mar 2026",urg:"aware",title:"Toolkit updated with fresh equity-gap evidence",
+   doms:["Curriculum","Teaching"],url:READS.teachai.u,
+   sum:"The schools toolkit adds data reinforcing that higher-poverty schools remain least likely to have any AI guidance — the settings that could benefit most are governed least.",
+   lens:"This is the number to put in front of the partnership. A THEP framework is, in part, an equity intervention against exactly that governance gap — evidence that borough-wide action is the point, not overreach.",
+   reviewed:false}
+];
+
+const feed=document.getElementById('feed');
+function renderFeed(filter){
+  feed.innerHTML='';
+  FEED.filter(it=>{
+    if(filter==='all')return true;
+    if(filter==='action')return it.urg==='action';
+    return it.doms.includes(filter);
+  }).forEach(it=>{
+    const el=document.createElement('article');el.className='item';
+    const rev=it.reviewed
+      ? '<span class="badge">TH lens · reviewed</span>'
+      : '<span class="badge unrev">TH lens · not yet reviewed</span>';
+    el.innerHTML=`
+      <div class="meta">
+        <span class="src">${it.src}</span>
+        <span class="urg ${it.urg}">${it.urg==='action'?'Action needed':'Awareness'}</span>
+        <span class="date">${it.date}</span>
+      </div>
+      <h3>${it.title}</h3>
+      <p class="summary">${it.sum}</p>
+      <div class="domlist">${it.doms.map(d=>`<span>${d}</span>`).join('')}</div>
+      <div class="lens">
+        <button class="lens-btn" aria-expanded="false">Through a Tower Hamlets lens <span class="chev">\u203A</span></button>
+        <div class="lens-body"><div class="lens-inner">
+          <div class="ai-flag">AI-drafted ${rev}</div>
+          <p>${it.lens}</p>
+          <div class="verify">\u2934 <a href="${it.url}" target="_blank" rel="noopener">Read the source</a> — verify before acting</div>
+        </div></div>
+      </div>`;
+    const btn=el.querySelector('.lens-btn'),lens=el.querySelector('.lens');
+    btn.onclick=()=>{const open=lens.classList.toggle('open');btn.setAttribute('aria-expanded',open)};
+    feed.appendChild(el);
+  });
+}
+renderFeed('all');
+document.querySelectorAll('#filters button').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('#filters button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');renderFeed(b.dataset.f);
+  };
+});
+
+/* open on the through-line by default so the panel isn't empty */
+showCell('eq','Inequality');
+</script>
+</body>
+</html>
