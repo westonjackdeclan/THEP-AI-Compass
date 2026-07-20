@@ -18,6 +18,9 @@
     --teal-wash:#E3EEEB;
     --amber:#B4690E;
     --amber-wash:#F6EBDB;
+    --red:#B4321E;
+    --red-wash:#F6E1DC;
+    --red-deep:#7A1F10;
     --mist:#64777F;
     --line:#D6DEE3;
     --line-soft:#E7ECEF;
@@ -54,7 +57,7 @@
   /* ---------- hero / intro ---------- */
   .hero{padding:52px 0 8px}
   .eyebrow{font-family:"IBM Plex Mono";font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin-bottom:16px}
-  .hero h1{font-size:clamp(30px,4.6vw,46px);max-width:18ch}
+  .hero h1{font-size:clamp(28px,4.2vw,42px);max-width:28ch}
   .hero p.lede{font-size:clamp(16px,1.9vw,19px);color:var(--ink-soft);max-width:58ch;margin:18px 0 0}
   .hero .hint{margin-top:22px;font-size:13.5px;color:var(--mist);display:flex;align-items:center;gap:8px}
   .hero .hint::before{content:"";width:22px;height:1px;background:var(--mist);display:inline-block}
@@ -91,6 +94,16 @@
   td.cell.colon button,td.cell.rowon button{background:#EAF3F1}
   td.cell.active button{background:var(--teal);border-color:var(--teal-deep);transform:scale(1.04)}
   td.cell.active button .dot{background:#fff;transform:scale(1.5)}
+  /* critical value: Safety before adoption — most important, shown in red */
+  tr[data-prin="safe"] th.prin .plab{color:var(--red);font-weight:600;position:relative}
+  tr[data-prin="safe"] th.prin .plab::after{content:"·";display:inline-block;margin-left:5px;color:var(--red);font-weight:700}
+  tr[data-prin="safe"] th.prin:hover .plab,tr[data-prin="safe"] th.prin.on .plab{color:var(--red-deep)}
+  tr[data-prin="safe"] td.cell button{border-color:#EFD5CE;background:#FDF4F1}
+  tr[data-prin="safe"] td.cell button:hover{background:var(--red-wash);border-color:var(--red)}
+  tr[data-prin="safe"] td.cell button .dot{background:#D6A197}
+  tr[data-prin="safe"] td.cell button:hover .dot{background:var(--red)}
+  tr[data-prin="safe"] td.cell.rowon button,tr[data-prin="safe"] td.cell.colon button{background:#F6E1DC}
+  tr[data-prin="safe"] td.cell.active button{background:var(--red);border-color:var(--red-deep)}
 
   /* reading panel — extended for questions / practice / TH grounding / reading */
   .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;min-height:280px;max-height:calc(100vh - 110px);overflow-y:auto}
@@ -98,6 +111,7 @@
   .panel .tags{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
   .tag{font-family:"IBM Plex Mono";font-size:10.5px;letter-spacing:.03em;padding:4px 8px;border-radius:999px;text-transform:uppercase}
   .tag.p{background:var(--teal-wash);color:var(--teal-deep)}
+  .tag.p.critical{background:var(--red-wash);color:var(--red-deep)}
   .tag.d{background:#EEF1F3;color:var(--ink-soft)}
   .panel h3{font-size:19px;margin-bottom:10px;line-height:1.22}
   .panel .commit{font-size:15.5px;color:var(--ink);margin:0 0 14px}
@@ -193,8 +207,8 @@
 
   <div class="hero">
     <div class="eyebrow">Reflective first, instructive second</div>
-    <h1>Seven values. Six areas of school life. Forty-two conversations worth having.</h1>
-    <p class="lede">A borough-wide framework schools adopt and adapt — not a mandate. Each intersection opens with the questions a leadership team should sit with, then the practical, referenced points to weigh, grounded in what it actually means to run a school in Tower Hamlets.</p>
+    <h1>Seven values. Six areas of school life. Forty-two considerations of how AI interacts with schools in Tower Hamlets.</h1>
+    <p class="lede">AI technology is increasingly interacting with all domains of school life. As a borough we believe that working with this technology should be values-driven. To understand the opportunities and challenges AI presents, this framework makes those interactions visible and offers the questions a leadership team should sit with — rather than a mandate. It is a practical starting point for considering AI, grounded in the reality of running a school in Tower Hamlets.</p>
     <div class="hint">Select a cell to open its questions — or a value or domain heading to scan the whole row or column</div>
   </div>
 
@@ -279,13 +293,13 @@ const READS = {
 
 /* ---------------- PRINCIPLES & DOMAINS ---------------- */
 const PRINCIPLES = [
-  {k:"rel", name:"Relationships first", blurb:"AI serves teaching and learning; it never replaces the relationship or the professional decision."},
-  {k:"eq",  name:"Equity is the standard", blurb:"Every decision is tested against one question: does this widen or narrow the gap for our most disadvantaged learners?"},
-  {k:"think",name:"Protect thinking", blurb:"We preserve productive friction — the desirable difficulty learning requires. Useful is not the same as safe."},
-  {k:"safe", name:"Safety before adoption", blurb:"No tool enters a setting before it has been assessed."},
-  {k:"trans",name:"Transparency", blurb:"We are open about when, how and why AI is used — with staff, pupils and families."},
-  {k:"dig",  name:"Dignity & agency", blurb:"Pupils are treated as future creators and critical users of AI, not passive consumers."},
-  {k:"inc",  name:"Inclusion by design", blurb:"Access, language and accessibility are designed in from the start, not retrofitted."}
+  {k:"safe", name:"Safety before adoption", short:"Safety", blurb:"No tool enters a setting before it has been assessed. This is the precondition every other value depends on — which is why it sits first, and why every intersection with it is marked."},
+  {k:"rel",  name:"Human relationships and interaction", short:"Relationships", blurb:"AI serves teaching and learning; it never replaces the relationship or the professional decision."},
+  {k:"eq",   name:"Equity is the standard", short:"Equity", blurb:"Every decision is tested against one question: does this widen or narrow the gap for our most disadvantaged learners?"},
+  {k:"think",name:"Protect thinking", short:"Thinking", blurb:"We preserve productive friction — the desirable difficulty learning requires. Useful is not the same as safe."},
+  {k:"trans",name:"Transparency and academic honesty", short:"Transparency", blurb:"We are open about when, how and why AI is used — with staff, pupils and families — and hold the line on honest attribution in student work."},
+  {k:"dig",  name:"Dignity & agency", short:"Dignity", blurb:"Pupils are treated as future creators and critical users of AI, not passive consumers."},
+  {k:"inc",  name:"Inclusive by design", short:"Inclusion", blurb:"Access, language and accessibility are designed in from the start, not retrofitted."}
 ];
 const DOMAINS = ["Curriculum","Teaching","Safeguarding","Academic outcomes","Culture","Inequality"];
 </script>
@@ -762,7 +776,7 @@ function showCell(pk,dom){
   const data=CELLS[`${pk}-${dom}`];
   const read=READS[data.read];
   panel.innerHTML=`
-    <div class="tags"><span class="tag p">${pName(pk)}</span><span class="tag d">${dom}</span></div>
+    <div class="tags"><span class="tag p${pk==='safe'?' critical':''}">${pName(pk)}</span><span class="tag d">${dom}</span></div>
     <h3>${data.c}</h3>
     <div class="sublab">Ask yourselves</div>
     <ol class="qs">${data.q.map(q=>`<li>${q}</li>`).join('')}</ol>
@@ -779,7 +793,7 @@ function showPrinciple(pk){
   const p=PRINCIPLES.find(x=>x.k===pk);
   let li=DOMAINS.map(dom=>`<li data-pk="${pk}" data-dom="${dom}"><span class="k">${dom}</span><span>${CELLS[`${pk}-${dom}`].c}</span></li>`).join('');
   panel.innerHTML=`
-    <div class="tags"><span class="tag p">Value</span></div>
+    <div class="tags"><span class="tag p${pk==='safe'?' critical':''}">${pk==='safe'?'Value · precondition':'Value'}</span></div>
     <h3>${p.name}</h3>
     <p class="commit">${p.blurb}</p>
     <ul class="rowlist">${li}</ul>
@@ -790,7 +804,7 @@ function showPrinciple(pk){
 function showDomain(dom){
   clearHi();
   document.querySelectorAll(`th.dom[data-dom="${dom}"]`).forEach(t=>t.classList.add('on'));
-  let li=PRINCIPLES.map(p=>`<li data-pk="${p.k}" data-dom="${dom}"><span class="k">${p.name.split(' ')[0]}\u2026</span><span>${CELLS[`${p.k}-${dom}`].c}</span></li>`).join('');
+  let li=PRINCIPLES.map(p=>`<li data-pk="${p.k}" data-dom="${dom}"><span class="k">${p.short}</span><span>${CELLS[`${p.k}-${dom}`].c}</span></li>`).join('');
   panel.innerHTML=`
     <div class="tags"><span class="tag d">Domain</span></div>
     <h3>${dom}</h3>
